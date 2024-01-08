@@ -1,42 +1,67 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap');
+
+:root {
+  --purple: #635FC7;
+  --light-purple: #A8A4FF;
+  --dark-blue: #000112;
+  --dark-gray: #20212C;
+  --gray: #2B2C37;
+  --light-gray: #3E3F4E;
+  --muted-gray: #828FA3;
+  --lightest-gray: #E4EBFA;
+  --off-white: #F4F7FD;
+  --white: #FFFFFF;
+  --red: #EA5555;
+  --light-red: #FF9898;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Typography Styles */
+h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h2 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 19px;
 }
 
-.card {
-  padding: 2em;
+h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: 2.4px;
 }
 
-.read-the-docs {
-  color: #888;
+p {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 23px;
+}
+
+p.bold {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+/* Basic Styles */
+
+body {
+  background: var(--dark-gray);
+  color: var(--white);
 }
