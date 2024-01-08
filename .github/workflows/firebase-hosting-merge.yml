@@ -23,3 +23,4 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TASK_MANAGER_448ED }}'
           channelId: live
           projectId: task-manager-448ed
+          entryPoint: task-manager/
