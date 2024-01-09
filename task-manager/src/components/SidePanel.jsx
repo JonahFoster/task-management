@@ -28,7 +28,7 @@ export default function SidePanel() {
         grabBoards()
     }, [])
 
-    const handleBoardSelection = (board) => {
+    function changeBoard(board) {
         setChosenBoard(board)
     }
 
@@ -42,7 +42,8 @@ export default function SidePanel() {
                 <h4>ALL BOARDS ({boards.length})</h4>
                 {boards.map((board, index) => (
                     <div key={index}
-                         className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}>
+                         className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}
+                         onClick={() => changeBoard(board)}>
                         <img className={styles.boardImg} src={boardImg} alt=""/>
                         <p>{board.name}</p>
                     </div>

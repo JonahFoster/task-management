@@ -47,6 +47,7 @@ li {
     align-items: center;
     width: 276px;
     height: 48px;
+    cursor: pointer;
 }
 
 .panelItemSelected {
