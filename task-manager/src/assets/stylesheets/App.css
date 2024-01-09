@@ -64,8 +64,24 @@ p.bold {
 /* Basic Styles */
 
 body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
   background: var(--dark-gray);
   color: var(--white);
   margin: 0;
   padding: 0;
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Site Styles */
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
 }

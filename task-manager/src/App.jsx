@@ -1,11 +1,14 @@
 import './assets/stylesheets/App.css'
 import SidePanel from './components/SidePanel'
-
+import Header from './components/Header'
 function App() {
 
   return (
-    <main>
-      <SidePanel />
+    <main className="app-container">
+        <SidePanel />
+        <div className="main-content">
+            <Header />
+        </div>
     </main>
   )
 }
