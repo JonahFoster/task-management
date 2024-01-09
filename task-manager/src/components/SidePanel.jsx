@@ -3,7 +3,22 @@ import boardImg from "../assets/icon-board.svg"
 import hideSidebarImg from "../assets/icon-hide-sidebar.svg"
 import logoImg from "../assets/logo-mobile.svg"
 import data from "../data.json"
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../firebase.js"
+
 export default function SidePanel() {
+    async function testFirestore() {
+        const docRef = doc(db, "users", "defaultUser", "boards", "0Tq9PsSQHqM1s1nWWAoN")
+        const docSnap = await getDoc(docRef)
+        if (docSnap.exists()) {
+            console.log("Document data:", docSnap.data());
+        } else {
+            // docSnap.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }
+
+    testFirestore()
     return (
         <section>
             <div className={styles.panelHeader}>
