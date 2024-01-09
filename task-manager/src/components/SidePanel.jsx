@@ -2,14 +2,14 @@ import styles from "../assets/stylesheets/SidePanel.module.css"
 import boardImg from "../assets/icon-board.svg"
 import hideSidebarImg from "../assets/icon-hide-sidebar.svg"
 import logoImg from "../assets/logo-mobile.svg"
-import data from "../data.json"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase.js"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { BoardContext } from '../contexts/BoardContext.jsx'
 
 export default function SidePanel() {
     const [boards, setBoards] = useState([])
-    const [chosenBoard, setChosenBoard] = useState(null)
+    const { chosenBoard, setChosenBoard } = useContext(BoardContext)
 
     // Function to fetch boards from Firestore
     async function grabBoards() {
@@ -19,15 +19,18 @@ export default function SidePanel() {
             fetchedBoards.push({ id: doc.id, ...doc.data() })
         })
         setBoards(fetchedBoards)
-        if (fetchedBoards.length > 0) {
+        if (fetchedBoards.length > 0 && !chosenBoard) {
             setChosenBoard(fetchedBoards[0])
         }
     }
 
-    // Call grabBoards when the component mounts
     useEffect(() => {
         grabBoards()
     }, [])
+
+    const handleBoardSelection = (board) => {
+        setChosenBoard(board)
+    }
 
     return (
         <section>
@@ -38,7 +41,8 @@ export default function SidePanel() {
             <div className={styles.panelContent}>
                 <h4>ALL BOARDS ({boards.length})</h4>
                 {boards.map((board, index) => (
-                    <div key={index} className={styles.panelItem}>
+                    <div key={index}
+                         className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}>
                         <img className={styles.boardImg} src={boardImg} alt=""/>
                         <p>{board.name}</p>
                     </div>
