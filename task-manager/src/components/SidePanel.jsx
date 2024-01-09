@@ -3,22 +3,32 @@ import boardImg from "../assets/icon-board.svg"
 import hideSidebarImg from "../assets/icon-hide-sidebar.svg"
 import logoImg from "../assets/logo-mobile.svg"
 import data from "../data.json"
-import { doc, getDoc } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase.js"
+import { useState, useEffect } from 'react'
 
 export default function SidePanel() {
-    async function testFirestore() {
-        const docRef = doc(db, "users", "defaultUser", "boards", "0Tq9PsSQHqM1s1nWWAoN")
-        const docSnap = await getDoc(docRef)
-        if (docSnap.exists()) {
-            console.log("Document data:", docSnap.data());
-        } else {
-            // docSnap.data() will be undefined in this case
-            console.log("No such document!");
+    const [boards, setBoards] = useState([])
+    const [chosenBoard, setChosenBoard] = useState(null)
+
+    // Function to fetch boards from Firestore
+    async function grabBoards() {
+        const querySnapshot = await getDocs(collection(db, "users", "defaultUser", "boards"))
+        const fetchedBoards = []
+        querySnapshot.forEach((doc) => {
+            fetchedBoards.push({ id: doc.id, ...doc.data() })
+        })
+        setBoards(fetchedBoards)
+        if (fetchedBoards.length > 0) {
+            setChosenBoard(fetchedBoards[0])
         }
     }
 
-    testFirestore()
+    // Call grabBoards when the component mounts
+    useEffect(() => {
+        grabBoards()
+    }, [])
+
     return (
         <section>
             <div className={styles.panelHeader}>
@@ -26,8 +36,8 @@ export default function SidePanel() {
                 <h1 className={styles.logoText}>kanban</h1>
             </div>
             <div className={styles.panelContent}>
-                <h4>ALL BOARDS ({data.boards.length})</h4>
-                {data.boards.map((board, index) => (
+                <h4>ALL BOARDS ({boards.length})</h4>
+                {boards.map((board, index) => (
                     <div key={index} className={styles.panelItem}>
                         <img className={styles.boardImg} src={boardImg} alt=""/>
                         <p>{board.name}</p>
