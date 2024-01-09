@@ -1,11 +1,12 @@
-import './App.css'
+import './assets/stylesheets/App.css'
+import SidePanel from './components/SidePanel'
 
 function App() {
 
   return (
-    <>
-      <h1>Task Management</h1>
-    </>
+    <main>
+      <SidePanel />
+    </main>
   )
 }
 
