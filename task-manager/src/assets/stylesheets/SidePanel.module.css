@@ -2,6 +2,8 @@ section {
     background-color: var(--gray);
     width: 300px;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .panelHeader {
@@ -14,12 +16,12 @@ h1 {
 }
 
 .panelContent {
-    height: 70%;
 }
 
 h4 {
     padding: 16px 142px 0px 32px;
     color: var(--muted-gray);
+    white-space: nowrap;
 }
 
 ul {
@@ -57,4 +59,9 @@ img {
     fill: white;
     stroke: white;
     padding: 0px 16px 0px 32px;
+}
+
+.panelFooterContent {
+    margin-top: auto;
+    padding-bottom: 40px;
 }
