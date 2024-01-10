@@ -33,6 +33,9 @@
 .mainBoardContainer {
     max-height: 100%;
     min-height: 80vh;
+    display: flex;
+    gap: 24px;
+    margin: 24px;
 }
 
 .columnContainer {
@@ -40,7 +43,6 @@
     max-height: 100%;
     display: flex;
     flex-direction: column;
-    margin: 24px 24px;
 }
 
 .columnHeader {
