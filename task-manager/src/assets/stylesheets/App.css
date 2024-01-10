@@ -54,7 +54,7 @@ p {
   line-height: 23px;
 }
 
-p.bold {
+.boldText {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: bold;
   font-size: 12px;

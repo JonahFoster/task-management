@@ -1,4 +1,4 @@
-.mainBoardContainer {
+.noColumnsMainBoardContainer {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,7 +18,7 @@
 .noColumnButton {
     width: 174px;
     height: 48px;
-    margin-top: 32px;
+    margin-top: 24px;
     border-radius: 24px;
     background: var(--purple);
     border: none;
@@ -28,4 +28,76 @@
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+.mainBoardContainer {
+    max-height: 100%;
+    min-height: 80vh;
+}
+
+.columnContainer {
+    width: 280px;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 24px 24px;
+}
+
+.columnHeader {
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.columnHeaderCircle {
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
+    background-color: #49C4E5;
+}
+
+.columnHeaderTitle {
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 2.4px;
+}
+
+.tasksContainer {
+    width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.individualTaskContainer {
+    width: 100%;
+    min-height: 88px;
+    border-radius: 8px;
+    background-color: var(--gray);
+    box-shadow: 0px 4px 6px 0px rgba(54, 78, 126, 0.10);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    padding-left: 16px;
+}
+
+.taskTitle {
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.taskSubTitle {
+    margin: 0;
+    padding: 0;
+    color: var(--muted-gray);
+    font-size: 12px;
+    font-weight: 700;
 }
