@@ -12,11 +12,9 @@ export default function BoardContent() {
         if (chosenBoard) {
             const colQuerySnapshot = await getDocs(collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns"))
             const fetchedColumns = []
-            console.log(colQuerySnapshot)
-            console.log(colQuerySnapshot.docs)
             for (let doc of colQuerySnapshot.docs) {
                 const column = { id: doc.id, ...doc.data() }
-                const tasksSnapshot = await getDocs(collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns"), "tasks")
+                const tasksSnapshot = await getDocs(collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns", doc.id, "tasks"))
                 column.tasks = tasksSnapshot.docs.map(taskDoc => ({ id: taskDoc.id, ...taskDoc.data() }))
                 fetchedColumns.push(column)
                 console.log(fetchedColumns)
@@ -42,10 +40,14 @@ export default function BoardContent() {
                                 <p className={styles.columnHeaderTitle}>{column.name} ({column.tasks.length})</p>
                             </div>
                             <div className={styles.tasksContainer}>
-                                <div className={styles.individualTaskContainer}>
-                                    <h3 className={styles.taskTitle}>Build UI for onboarding flow</h3>
-                                    <p className={styles.taskSubTitle}>0 of 3 subtasks</p>
-                                </div>
+                                {column.tasks.map(task => (
+                                    <div key={task.id} className={styles.individualTaskContainer}>
+                                        <h3 className={styles.taskTitle}>{task.description}</h3>
+                                        <p className={styles.taskSubTitle}>
+                                            0 of {task.subtasks && Array.isArray(task.subtasks) ? task.subtasks.length : 0} subtasks
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     ))}

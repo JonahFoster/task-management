@@ -73,3 +73,25 @@ li {
     margin-top: auto;
     padding-bottom: 40px;
 }
+
+.showPanelIcon {
+    width: 56px;
+    height: 48px;
+    border-radius: 0 50% 50% 0 ;
+    background-color: var(--purple);
+    display: flex;
+    align-items: center;
+    padding-left: 18px;
+    position: fixed;
+    bottom: 32px;
+    cursor: pointer;
+}
+
+.sidePanel {
+    transition: transform 0.5s ease-in-out;
+    transform: translateX(0);
+}
+
+.sidePanelHidden {
+    transform: translateX(-100%);
+}
