@@ -103,3 +103,23 @@
     font-size: 12px;
     font-weight: 700;
 }
+
+.addColumnContainer {
+    background: linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.13) 100%);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.addColumnHeader {
+    visibility: hidden;
+}
+
+.addColumnText {
+    color: var(--muted-gray);
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+}
