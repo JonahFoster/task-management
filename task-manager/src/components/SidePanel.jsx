@@ -39,32 +39,33 @@ export default function SidePanel() {
 
     return (
         <>
-            <section className={`${styles.sidePanel} ${!panelVisibility ? styles.sidePanelHidden : ''}`}>
-                <div className={styles.panelHeader}>
-                    <img className={styles.logo} src={logoImg} alt=""/>
-                    <h1 className={styles.logoText}>kanban</h1>
-                </div>
-                <div className={styles.panelContent}>
-                    <h4>ALL BOARDS ({boards.length})</h4>
-                    {boards.map((board, index) => (
-                        <div key={index}
-                             className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}
-                             onClick={() => changeBoard(board)}>
-                            <img className={styles.boardImg} src={boardImg} alt=""/>
-                            <p>{board.name}</p>
-                        </div>
-                    ))}
-                    <div className={`${styles.panelItem} ${styles.panelItemNew}`}>
-                        <img className={styles.boardImg} src={boardImg} alt=""/>
-                        <p>Create New Board</p>
+            {panelVisibility && (
+                <section className={styles.sidePanel}>
+                    <div className={styles.panelHeader}>
+                        <img className={styles.logo} src={logoImg} alt=""/>
+                        <h1 className={styles.logoText}>kanban</h1>
                     </div>
-                </div>
-                <div className={`${styles.panelItem} ${styles.panelFooterContent}`} onClick={togglePanelVisibility}>
-                    <img className={styles.boardImg} src={hideSidebarImg} alt=""/>
-                    <p>Hide Sidebar</p>
-                </div>
-            </section>
-
+                    <div className={styles.panelContent}>
+                        <h4>ALL BOARDS ({boards.length})</h4>
+                        {boards.map((board, index) => (
+                            <div key={index}
+                                 className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}
+                                 onClick={() => changeBoard(board)}>
+                                <img className={styles.boardImg} src={boardImg} alt=""/>
+                                <p>{board.name}</p>
+                            </div>
+                        ))}
+                        <div className={styles.panelItem + ' ' + styles.panelItemNew}>
+                            <img className={styles.boardImg} src={boardImg} alt=""/>
+                            <p>Create New Board</p>
+                        </div>
+                    </div>
+                    <div className={styles.panelItem + ' ' + styles.panelFooterContent} onClick={togglePanelVisibility}>
+                        <img className={styles.boardImg} src={hideSidebarImg} alt=""/>
+                        <p>Hide Sidebar</p>
+                    </div>
+                </section>
+            )}
             {!panelVisibility && (
                 <div className={styles.showPanelIcon} onClick={togglePanelVisibility}>
                     <img src={showSidebarImg} alt="" />

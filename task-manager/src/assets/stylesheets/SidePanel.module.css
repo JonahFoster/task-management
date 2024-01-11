@@ -83,15 +83,6 @@ li {
     align-items: center;
     padding-left: 18px;
     position: fixed;
-    bottom: 32px;
+    bottom: 20px;
     cursor: pointer;
-}
-
-.sidePanel {
-    transition: transform 0.5s ease-in-out;
-    transform: translateX(0);
-}
-
-.sidePanelHidden {
-    transform: translateX(-100%);
 }
