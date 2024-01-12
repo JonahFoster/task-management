@@ -1,10 +1,10 @@
-import { useContext } from 'react'
+import { useContext, useRef, useCallback } from 'react'
 import { ModalContext } from "../contexts/ModalContext.jsx"
-
-// Import modal components
+import ViewTaskModal from "./ViewTaskModal.jsx"
 
 const modalComponents = {
-    // add individual modal components here
+    'ViewTaskModal': ViewTaskModal,
+    // Add components
 }
 
 export default function ModalContainer() {
@@ -14,9 +14,19 @@ export default function ModalContainer() {
 
     const ActiveModal = modalComponents[modalState.modalType]
 
+    const modalContentRef = useRef(null)
+
+    const handleBackdropClick = useCallback((event) => {
+        if (modalContentRef.current && !modalContentRef.current.contains(event.target)) {
+            hideModal()
+        }
+    }, [hideModal])
+
     return (
-        <div className="">
-            <ActiveModal {...modalState.modalProps} onClose={hideModal} />
+        <div className="modal-backdrop" onClick={handleBackdropClick}>
+            <div ref={modalContentRef}>
+                <ActiveModal {...modalState.modalProps} onClose={hideModal} />
+            </div>
         </div>
     )
 }

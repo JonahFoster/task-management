@@ -1,12 +1,18 @@
 import styles from "../assets/stylesheets/BoardContent.module.css"
 import { useEffect, useState, useContext } from 'react'
 import { BoardContext } from '../contexts/BoardContext.jsx'
+import { ModalContext } from "../contexts/ModalContext.jsx"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase.js"
 
 export default function BoardContent() {
     const { chosenBoard } = useContext(BoardContext)
     const [ columns, setColumns ] = useState([])
+    const { showModal } = useContext(ModalContext)
+
+    function handleTaskClick() {
+        showModal('ViewTaskModal')
+    }
 
     async function fetchBoardData() {
         if (chosenBoard) {
@@ -41,7 +47,7 @@ export default function BoardContent() {
                             </div>
                             <div className={styles.tasksContainer}>
                                 {column.tasks.map(task => (
-                                    <div key={task.id} className={styles.individualTaskContainer}>
+                                    <div key={task.id} className={styles.individualTaskContainer} onClick={handleTaskClick}>
                                         <h3 className={styles.taskTitle}>{task.description}</h3>
                                         <p className={styles.taskSubTitle}>
                                             0 of {task.subtasks && Array.isArray(task.subtasks) ? task.subtasks.length : 0} subtasks

@@ -1,0 +1,96 @@
+.modalContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px;
+    width: 480px;
+    height: 523px;
+    border-radius: 6px;
+    background-color: var(--gray);
+    box-sizing: border-box;
+}
+
+.modalContent {
+    height: 100%;
+}
+
+.modalHeaderContainer {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.modalHeader {
+    margin: 0;
+}
+
+.ellipsis {
+    width: 4.615px;
+    height: 20px;
+}
+
+.modalTaskDescription {
+    color: var(--muted-gray);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 23px;
+}
+
+.modalSubHeading {
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.modalSubtasksContainer {
+    min-height: 155px;
+}
+
+.modalSubtaskContainer {
+    display: flex;
+    align-items: center;
+    padding: 13px;
+    gap: 16px;
+    border-radius: 4px;
+    background: var(--dark-gray);
+}
+
+.modalCheckSquare {
+    height: 16px;
+    width: 16px;
+    border-radius: 2px;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    background: var(--gray);
+    flex-shrink: 0;
+}
+
+.modalSubtaskText {
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0;
+    padding: 4px;
+}
+
+.statusDropdown {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 23px;
+    background-image: url('../icon-chevron-down.svg');
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+    padding: 8px 16px;
+    background-color: var(--gray);
+}
+
+
