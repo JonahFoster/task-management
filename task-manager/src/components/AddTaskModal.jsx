@@ -25,12 +25,41 @@ export default function AddTaskModal({ onClose }) {
         <div className={styles.modalContainer}>
             <div className={styles.modalContent}>
                 <form onSubmit={handleSubmit}>
-                    <input
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        placeholder="e.g. Take coffee break"
-                    />
+                    <div className={styles.modalFormInputContainer}>
+                        <label className={styles.modalFormLabel} htmlFor="title">Title</label>
+                        <input
+                            id="title"
+                            name="title"
+                            type="text"
+                            value={formData.title}
+                            onChange={handleChange}
+                            placeholder="e.g. Take coffee break"
+                            className={styles.modalFormText}
+                        />
+                    </div>
+                    <div className={styles.modalFormInputContainer}>
+                        <label className={styles.modalFormLabel} htmlFor="description">Description</label>
+                        <textarea
+                            id="description"
+                            name="description"
+                            value={formData.description}
+                            onChange={handleChange}
+                            placeholder="e.g. Take coffee break"
+                            className={styles.modalFormText + " " + styles.modalFormTextArea}
+                        />
+                    </div>
+                    <div className={styles.modalFormInputContainer}>
+                        <label className={styles.modalFormLabel} htmlFor="subtask">Subtask</label>
+                        <input
+                            id="subtask"
+                            name="subtask"
+                            type="text"
+                            value={formData.title}
+                            onChange={handleChange}
+                            placeholder="e.g. Take coffee break"
+                            className={styles.modalFormText}
+                        />
+                    </div>
                 </form>
             </div>
         </div>
