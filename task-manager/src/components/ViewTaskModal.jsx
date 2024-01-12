@@ -9,9 +9,9 @@ export default function ViewTaskModal({ taskData, onClose }) {
         return null
     }
 
-    let title = taskData?.title || 'No Title';
-    let description = taskData?.description || 'No Description';
-    let subtasksData = taskData?.subtasks || [];
+    let title = taskData?.title || 'No Title'
+    let description = taskData?.description || 'No Description'
+    let subtasksData = taskData?.subtasks || []
 
     return (
         <div className={styles.modalContainer}>

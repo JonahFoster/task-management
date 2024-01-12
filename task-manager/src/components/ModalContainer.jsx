@@ -1,9 +1,11 @@
 import { useContext, useRef, useCallback } from 'react'
 import { ModalContext } from "../contexts/ModalContext.jsx"
 import ViewTaskModal from "./ViewTaskModal.jsx"
+import AddTaskModal from "./AddTaskModal.jsx"
 
 const modalComponents = {
     'ViewTaskModal': ViewTaskModal,
+    "AddTaskModal": AddTaskModal,
     // Add components
 }
 

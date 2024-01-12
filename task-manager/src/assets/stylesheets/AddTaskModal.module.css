@@ -1,0 +1,15 @@
+.modalContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px;
+    width: 480px;
+    height: 675px;
+    border-radius: 6px;
+    background-color: var(--gray);
+    box-sizing: border-box;
+}
+
+.modalContent {
+    height: 100%;
+}
