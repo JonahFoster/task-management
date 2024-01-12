@@ -10,8 +10,8 @@ export default function BoardContent() {
     const [ columns, setColumns ] = useState([])
     const { showModal } = useContext(ModalContext)
 
-    function handleTaskClick() {
-        showModal('ViewTaskModal')
+    function handleTaskClick(task) {
+        showModal('ViewTaskModal', { taskData: task })
     }
 
     async function fetchBoardData() {
@@ -47,8 +47,8 @@ export default function BoardContent() {
                             </div>
                             <div className={styles.tasksContainer}>
                                 {column.tasks.map(task => (
-                                    <div key={task.id} className={styles.individualTaskContainer} onClick={handleTaskClick}>
-                                        <h3 className={styles.taskTitle}>{task.description}</h3>
+                                    <div key={task.id} className={styles.individualTaskContainer} onClick={() => handleTaskClick(task)}>
+                                        <h3 className={styles.taskTitle}>{task.title}</h3>
                                         <p className={styles.taskSubTitle}>
                                             0 of {task.subtasks && Array.isArray(task.subtasks) ? task.subtasks.length : 0} subtasks
                                         </p>

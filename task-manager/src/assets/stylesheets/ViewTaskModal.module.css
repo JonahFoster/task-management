@@ -45,6 +45,9 @@
 
 .modalSubtasksContainer {
     min-height: 155px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .modalSubtaskContainer {
