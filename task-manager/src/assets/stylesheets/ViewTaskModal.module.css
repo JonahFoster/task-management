@@ -88,6 +88,7 @@
     color: var(--white);
     font-size: 13px;
     font-weight: 500;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     line-height: 23px;
     background-image: url('../icon-chevron-down.svg');
     background-position: right 16px center;
