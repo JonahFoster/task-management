@@ -3,11 +3,13 @@ import { ModalContext } from "../contexts/ModalContext.jsx"
 import ViewTaskModal from "./ViewTaskModal.jsx"
 import AddTaskModal from "./AddTaskModal.jsx"
 import EditTaskModal from "./EditTaskModal.jsx";
+import AddBoardModal from "./AddBoardModal.jsx";
 
 const modalComponents = {
     'ViewTaskModal': ViewTaskModal,
     "AddTaskModal": AddTaskModal,
     "EditTaskModal": EditTaskModal,
+    "AddBoardModal": AddBoardModal,
 }
 
 export default function ModalContainer() {

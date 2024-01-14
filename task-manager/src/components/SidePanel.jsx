@@ -7,14 +7,20 @@ import { collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase.js"
 import { useState, useEffect, useContext } from 'react'
 import { BoardContext } from '../contexts/BoardContext.jsx'
+import {ModalContext} from "../contexts/ModalContext.jsx"
 
 export default function SidePanel() {
     const [boards, setBoards] = useState([])
     const { chosenBoard, setChosenBoard } = useContext(BoardContext)
     const [panelVisibility, setPanelVisibility] = useState(true)
+    const { showModal } = useContext(ModalContext)
 
     function togglePanelVisibility() {
         setPanelVisibility(!panelVisibility)
+    }
+
+    function handleAddBoardClick() {
+        showModal('AddBoardModal')
     }
 
     async function grabBoards() {
@@ -55,8 +61,8 @@ export default function SidePanel() {
                                 <p>{board.name}</p>
                             </div>
                         ))}
-                        <div className={styles.panelItem + ' ' + styles.panelItemNew}>
-                            <img className={styles.boardImg} src={boardImg} alt=""/>
+                        <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleAddBoardClick}>
+                            <img className={styles.boardImg} src={boardImg} alt="" />
                             <p>Create New Board</p>
                         </div>
                     </div>
