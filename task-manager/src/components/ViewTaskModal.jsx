@@ -1,10 +1,13 @@
 import styles from "../assets/stylesheets/ViewTaskModal.module.css"
 import ellipsisImg from "../assets/icon-vertical-ellipsis.svg"
+import {ModalContext} from "../contexts/ModalContext.jsx"
+import { useContext } from 'react'
 
 // TODO dropdown menu state to change column for task
 // TODO modalCheckSquare states for checked and unchecked. should change color and have a check img
 // TODO add a close button
 export default function ViewTaskModal({ taskData, onClose }) {
+    const { showModal } = useContext(ModalContext)
     if (!taskData) {
         return null
     }
@@ -13,12 +16,16 @@ export default function ViewTaskModal({ taskData, onClose }) {
     let description = taskData?.description || 'No Description'
     let subtasksData = taskData?.subtasks || []
 
+    function handleEditTaskClick() {
+        showModal('EditTaskModal')
+    }
+
     return (
         <div className={styles.modalContainer}>
             <div className={styles.modalContent}>
                 <div className={styles.modalHeaderContainer}>
                     <h2 className={styles.modalHeader}>{title}</h2>
-                    <img className={styles.ellipsis} src={ellipsisImg} alt=""/>
+                    <img className={styles.ellipsis} src={ellipsisImg} alt="" onClick={handleEditTaskClick}/>
                 </div>
                 <p className={styles.modalTaskDescription}>{description}</p>
                 <p className={styles.modalSubHeading}>Subtasks (0 of {subtasksData.length})</p>
