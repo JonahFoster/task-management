@@ -1,9 +1,13 @@
 import styles from "../assets/stylesheets/AddTaskModal.module.css"
 import crossImg from "../assets/icon-cross.svg"
-import { useState } from 'react'
+import {useContext, useState} from 'react'
+import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from "../../firebase.js"
+import { BoardContext } from '../contexts/BoardContext.jsx'
 
 // TODO map columns list to select input
 export default function AddTaskModal({ onClose }) {
+    const { chosenBoard } = useContext(BoardContext)
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -11,10 +15,20 @@ export default function AddTaskModal({ onClose }) {
         column: ''
     })
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault()
-        console.log("temp")
-        // Code to upload data to Firebase
+        console.log(formData)
+        const columnsRef =  collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns")
+        const columnQuery = query(columnsRef, where("name", "==", formData.column))
+        const querySnapshot = await getDocs(columnQuery)
+        const columnDoc = querySnapshot.docs[0]
+        const taskDocRef = doc(collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns", columnDoc.id, "tasks"))
+        await setDoc(taskDocRef, {
+            title: formData.title,
+            description: formData.description,
+            status: formData.column,
+            subtasks: formData.subtasks
+        })
     }
 
     function handleChange(e) {
@@ -99,7 +113,7 @@ export default function AddTaskModal({ onClose }) {
                         >
                             <option value="toDo">Todo</option>
                             <option value="inProgress">In Progress</option>
-                            <option value="complete">Complete</option>
+                            <option value="Done">Done</option>
                         </select>
                     </div>
                     <button type="submit" className={styles.modalSubmitBtn}>Create Task</button>
