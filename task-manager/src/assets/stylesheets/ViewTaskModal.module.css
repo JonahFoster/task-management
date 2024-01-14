@@ -17,7 +17,7 @@
 .modalHeaderContainer {
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: space-between;
     margin-bottom: 24px;
 }
 
