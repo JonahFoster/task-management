@@ -1,0 +1,53 @@
+.modalContainer {
+    width: 480px;
+    height: 229px;
+    padding: 32px 32px 40px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.modalHeader {
+    margin: 0;
+    padding: 0;
+    color: var(--red)
+}
+
+.modalBodyText {
+    margin: 0;
+    padding: 0;
+    color: var(--muted-gray);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 23px;
+}
+
+.modalButtonContainer {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.modalBtn {
+    width: 200px;
+    height: 40px;
+    border-radius: 20px;
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 23px;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.modalDelete {
+    background: var(--red);
+    color: var(--white)
+}
+
+.modalCancel {
+    background: var(--white);
+    color: var(--purple)
+}

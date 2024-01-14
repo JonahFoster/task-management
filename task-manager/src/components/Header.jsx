@@ -12,11 +12,15 @@ export default function Header() {
         showModal('AddTaskModal')
     }
 
+    function handleEditBoardClick() {
+        showModal('EditBoardModal')
+    }
+
     return (
         <header>
             <h1 className={styles.boardName}>{chosenBoard ? chosenBoard.name : 'No board selected'}</h1>
             <button className={styles.headerAddBtn} onClick={handleAddTaskClick}>+ Add New Task</button>
-            <img className={styles.ellipsisImg} src={verticalEllipsisImg} alt="" />
+            <img className={styles.ellipsisImg} src={verticalEllipsisImg} alt="" onClick={handleEditBoardClick}/>
         </header>
     )
 }
