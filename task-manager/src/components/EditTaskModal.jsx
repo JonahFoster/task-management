@@ -3,7 +3,7 @@ import crossImg from "../assets/icon-cross.svg"
 import { useState } from 'react'
 
 // TODO map columns list to select input
-export default function AddTaskModal({ onClose }) {
+export default function EditTaskModal({ onClose }) {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -40,7 +40,7 @@ export default function AddTaskModal({ onClose }) {
     return (
         <div className={styles.modalContainer}>
             <div className={styles.modalContent}>
-                <h2 className={styles.modalHeading}>Add New Task</h2>
+                <h2 className={styles.modalHeading}>Edit Task</h2>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.modalFormInputContainer}>
                         <label className={styles.modalFormLabel} htmlFor="title">Title</label>
