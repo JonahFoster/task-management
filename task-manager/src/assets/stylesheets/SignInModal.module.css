@@ -1,0 +1,78 @@
+.modalContainer {
+    width: 480px;
+    padding: 32px;
+    background-color: var(--gray);
+    border-radius: 6px;
+}
+
+.modalContent {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.modalHeading {
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 700;
+    padding: 0;
+    margin: 0 0 24px 0;
+}
+
+.modalLabel {
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0;
+}
+
+.modalEmailInput {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    background: var(--gray);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: white;
+    margin: 8px 0 24px 0;
+}
+
+.modalPasswordsContainer {
+    display: flex;
+    gap: 16px;
+}
+
+.modalPasswordInput {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid rgba(130, 143, 163, 0.25);
+    background: var(--gray);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: white;
+    margin: 8px 0 24px 0;
+}
+
+.modalSignUpButton {
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    background-color: var(--purple);
+    color: var(--white);
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 23px;
+    border: none;
+}
+
+.modalSubHeading {
+    color: var(--muted-gray);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 23px;
+    text-align: center;
+}

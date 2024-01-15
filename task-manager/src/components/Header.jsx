@@ -9,7 +9,8 @@ export default function Header() {
     const { showModal } = useContext(ModalContext)
 
     function handleAddTaskClick() {
-        showModal('AddTaskModal')
+//        showModal('AddTaskModal')
+          showModal('SignUpModal')
     }
 
     function handleEditBoardClick() {
