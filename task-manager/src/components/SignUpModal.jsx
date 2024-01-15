@@ -1,8 +1,8 @@
 import styles from "../assets/stylesheets/SignUpModal.module.css"
-
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function SignUpModal() {
-
+    const auth = getAuth()
     return (
         <div className={styles.modalContainer}>
             <div className={styles.modalContent}>
