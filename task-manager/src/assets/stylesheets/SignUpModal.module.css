@@ -66,6 +66,7 @@
     font-weight: 700;
     line-height: 23px;
     border: none;
+    margin-bottom: 24px;
 }
 
 .modalSubHeading {
@@ -75,4 +76,5 @@
     font-weight: 500;
     line-height: 23px;
     text-align: center;
+    margin: 0;
 }
