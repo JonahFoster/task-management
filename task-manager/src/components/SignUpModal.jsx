@@ -60,7 +60,7 @@ export default function SignUpModal() {
                 <h2 className={styles.modalHeading}>Sign Up</h2>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="email" className={styles.modalLabel}>Email</label>
-                    <input type="text" name="email" id="email" className={styles.modalEmailInput}
+                    <input type="email" name="email" id="email" className={styles.modalEmailInput}
                            onChange={handleChange}/>
                     <div className={styles.modalPasswordsContainer}>
                         <div>

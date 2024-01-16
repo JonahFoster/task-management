@@ -6,6 +6,7 @@ import EditTaskModal from "./EditTaskModal.jsx";
 import AddBoardModal from "./AddBoardModal.jsx";
 import EditBoardModal from "./EditBoardModal.jsx";
 import SignUpModal from "./SignUpModal.jsx";
+import LoginModal from "./LoginModal.jsx";
 
 const modalComponents = {
     'ViewTaskModal': ViewTaskModal,
@@ -14,6 +15,7 @@ const modalComponents = {
     "AddBoardModal": AddBoardModal,
     "EditBoardModal": EditBoardModal,
     "SignUpModal": SignUpModal,
+    "LoginModal": LoginModal,
 }
 
 export default function ModalContainer() {
