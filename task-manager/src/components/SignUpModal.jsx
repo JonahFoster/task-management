@@ -1,12 +1,21 @@
 import styles from "../assets/stylesheets/SignUpModal.module.css"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import {useState} from "react";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
+import {useContext, useState} from "react"
+import {ModalContext} from "../contexts/ModalContext.jsx"
+
+// TODO
+// finish using submitted, error, and password equal state
+// make any necessary changes to optimize
+// add login link
+// close modal if sign up goes well
+// fix how text looks in input
 
 export default function SignUpModal() {
     const auth = getAuth()
     const [error, setError] = useState(false)
     const [submitted, setSubmitted] = useState(false)
     const [passwordsEqual, setPasswordsEqual] = useState(true)
+    const { hideModal } = useContext(ModalContext)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -41,6 +50,7 @@ export default function SignUpModal() {
                 .catch((error) => {
                     console.log(error.code + ' ' + error.message)
                 })
+            hideModal()
         }
     }
 
@@ -64,6 +74,16 @@ export default function SignUpModal() {
                                    className={styles.modalPasswordInput} onChange={handleChange}/>
                         </div>
                     </div>
+                    {error && (
+                        <p className={styles.modalSubHeading + ' ' + styles.modalSubHeadingError}>
+                            Fields cannot be empty
+                        </p>
+                    )}
+                    {!passwordsEqual && (
+                        <p className={styles.modalSubHeading + ' ' + styles.modalSubHeadingError}>
+                            Passwords don't match
+                        </p>
+                    )}
                     <button className={styles.modalSignUpButton}>Get Started</button>
                 </form>
                 <p className={styles.modalSubHeading}>Already have an account? Login here instead!</p>
