@@ -70,7 +70,7 @@ li {
 }
 
 .panelFooterContent {
-    margin-top: auto;
+    margin-top: 100px;
     padding-bottom: 40px;
 }
 
@@ -85,4 +85,8 @@ li {
     position: fixed;
     bottom: 20px;
     cursor: pointer;
+}
+
+.panelManage {
+    margin-top: auto;
 }

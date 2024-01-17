@@ -23,6 +23,14 @@ export default function SidePanel() {
         showModal('AddBoardModal')
     }
 
+    function handleAddTaskClick() {
+        showModal('AddTaskModal')
+    }
+
+    function handleEditBoardClick() {
+        showModal('EditBoardModal')
+    }
+
     async function grabBoards() {
         const querySnapshot = await getDocs(collection(db, "users", "defaultUser", "boards"))
         const fetchedBoards = []
@@ -62,8 +70,19 @@ export default function SidePanel() {
                             </div>
                         ))}
                         <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleAddBoardClick}>
-                            <img className={styles.boardImg} src={boardImg} alt="" />
+                            <img className={styles.boardImg} src={boardImg} alt=""/>
                             <p>Create New Board</p>
+                        </div>
+                    </div>
+                    <div className={styles.panelManage}>
+                        <h4>MANAGE</h4>
+                        <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleEditBoardClick}>
+                            <img className={styles.boardImg} src={boardImg} alt=""/>
+                            <p>Edit Board</p>
+                        </div>
+                        <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleAddTaskClick}>
+                            <img className={styles.boardImg} src={boardImg} alt=""/>
+                            <p>Add Task</p>
                         </div>
                     </div>
                     <div className={styles.panelItem + ' ' + styles.panelFooterContent} onClick={togglePanelVisibility}>
@@ -74,7 +93,7 @@ export default function SidePanel() {
             )}
             {!panelVisibility && (
                 <div className={styles.showPanelIcon} onClick={togglePanelVisibility}>
-                    <img src={showSidebarImg} alt="" />
+                    <img src={showSidebarImg} alt=""/>
                 </div>
             )}
         </>
