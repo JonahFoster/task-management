@@ -8,6 +8,8 @@ import { db } from "../../firebase.js"
 import { useState, useEffect, useContext } from 'react'
 import { BoardContext } from '../contexts/BoardContext.jsx'
 import {ModalContext} from "../contexts/ModalContext.jsx"
+import { BsKanbanFill, BsCheckSquare } from "react-icons/bs";
+import { RiTaskLine } from "react-icons/ri";
 
 export default function SidePanel() {
     const [boards, setBoards] = useState([])
@@ -65,23 +67,23 @@ export default function SidePanel() {
                             <div key={index}
                                  className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}
                                  onClick={() => changeBoard(board)}>
-                                <img className={styles.boardImg} src={boardImg} alt=""/>
+                                <BsKanbanFill className={styles.boardImg} />
                                 <p>{board.name}</p>
                             </div>
                         ))}
                         <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleAddBoardClick}>
-                            <img className={styles.boardImg} src={boardImg} alt=""/>
+                            <BsKanbanFill className={styles.boardImg + ' ' + styles.boardImgInteract} />
                             <p>Create New Board</p>
                         </div>
                     </div>
                     <div className={styles.panelManage}>
                         <h4>MANAGE</h4>
                         <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleEditBoardClick}>
-                            <img className={styles.boardImg} src={boardImg} alt=""/>
+                            <BsKanbanFill className={styles.boardImg + ' ' + styles.boardImgInteract} />
                             <p>Edit Board</p>
                         </div>
                         <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleAddTaskClick}>
-                            <img className={styles.boardImg} src={boardImg} alt=""/>
+                            <BsCheckSquare className={styles.boardImg + ' ' + styles.boardImgInteract} />
                             <p>Add Task</p>
                         </div>
                     </div>
