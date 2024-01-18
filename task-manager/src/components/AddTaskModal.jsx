@@ -4,10 +4,13 @@ import {useContext, useState} from 'react'
 import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore'
 import { db } from "../../firebase.js"
 import { BoardContext } from '../contexts/BoardContext.jsx'
+import {getAuth} from "firebase/auth";
 
 // TODO map columns list to select input
 export default function AddTaskModal({ onClose }) {
     const { chosenBoard } = useContext(BoardContext)
+    const auth = getAuth()
+    const user = auth.currentUser
     const [formData, setFormData] = useState({
         title: '',
         description: '',
@@ -18,11 +21,11 @@ export default function AddTaskModal({ onClose }) {
     async function handleSubmit(e) {
         e.preventDefault()
         console.log(formData)
-        const columnsRef =  collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns")
+        const columnsRef =  collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
         const columnQuery = query(columnsRef, where("name", "==", formData.column))
         const querySnapshot = await getDocs(columnQuery)
         const columnDoc = querySnapshot.docs[0]
-        const taskDocRef = doc(collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns", columnDoc.id, "tasks"))
+        const taskDocRef = doc(collection(db, "users", user.uid, "boards", chosenBoard.id, "columns", columnDoc.id, "tasks"))
         await setDoc(taskDocRef, {
             title: formData.title,
             description: formData.description,

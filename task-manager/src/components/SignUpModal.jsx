@@ -21,7 +21,8 @@ export default function SignUpModal() {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        board: '',
     })
 
     function handleChange(e) {
@@ -31,10 +32,10 @@ export default function SignUpModal() {
     const handleSubmit = (event) => {
         event.preventDefault()
         if (
-            formData.name === "" ||
             formData.email === "" ||
             formData.password === "" ||
-            formData.confirmPassword === ""
+            formData.confirmPassword === "" ||
+            formData.board === ""
         ) {
             setError(true)
         } else if (!(formData.password === formData.confirmPassword)) {
@@ -47,7 +48,7 @@ export default function SignUpModal() {
                 .then((userCredential) => {
                     // Signed up
                     const user = userCredential.user
-                    createUserCollection(user.uid)
+                    createUserCollection(user.uid, formData.board)
                 })
                 .catch((error) => {
                     console.log(error.code + ' ' + error.message)
@@ -56,12 +57,12 @@ export default function SignUpModal() {
         }
     }
 
-    async function createUserCollection(userId) {
+    async function createUserCollection(userId, boardName) {
         const userDocRef = doc(db, "users", userId);
         await setDoc(userDocRef, {});
         const boardsCollectionRef = collection(userDocRef, "boards");
-        const placeholderDocRef = doc(boardsCollectionRef);
-        await setDoc(placeholderDocRef, { placeholder: true });
+        const firstBoardDocRef = doc(boardsCollectionRef);
+        await setDoc(firstBoardDocRef, { name: boardName });
     }
 
 
@@ -95,6 +96,9 @@ export default function SignUpModal() {
                             Passwords don't match
                         </p>
                     )}
+                    <label htmlFor="board" className={styles.modalLabel}>First Board Name - This can be changed later</label>
+                    <input type="text" name="board" id="board" className={styles.modalEmailInput}
+                           onChange={handleChange}/>
                     <button className={styles.modalSignUpButton}>Get Started</button>
                 </form>
                 <p className={styles.modalSubHeading}>Already have an account? Login here instead!</p>
