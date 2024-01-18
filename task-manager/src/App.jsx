@@ -1,24 +1,30 @@
 import './assets/stylesheets/App.css'
 import { BoardProvider } from './contexts/BoardContext.jsx'
-import SidePanel from './components/SidePanel'
-import Header from './components/Header'
-import BoardContent from './components/BoardContent'
 import {ModalProvider} from "./contexts/ModalContext.jsx"
+import KanbanBoard from "./components/KanbanBoard.jsx"
+import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import Home from "./components/Home.jsx"
+import React from "react"
 import ModalContainer from "./components/ModalContainer.jsx"
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Home />,
+    },
+    {
+        path: "/app",
+        element: <KanbanBoard />,
+    },
+])
 
 function App() {
 
   return (
       <ModalProvider>
           <BoardProvider>
-              <main className="app-container">
-                  <SidePanel/>
-                  <div className="main-content">
-                      <Header/>
-                      <BoardContent />
-                  </div>
-                  <ModalContainer />
-              </main>
+              <RouterProvider router={router} />
+              <ModalContainer/>
           </BoardProvider>
       </ModalProvider>
   )
