@@ -57,10 +57,13 @@ export default function SignUpModal() {
     }
 
     async function createUserCollection(userId) {
-        const userDocRef = doc(db, "users", userId)
-        await setDoc(userDocRef, {})
-        const boardsCollectionRef = collection(userDocRef, "boards")
+        const userDocRef = doc(db, "users", userId);
+        await setDoc(userDocRef, {});
+        const boardsCollectionRef = collection(userDocRef, "boards");
+        const placeholderDocRef = doc(boardsCollectionRef);
+        await setDoc(placeholderDocRef, { placeholder: true });
     }
+
 
     return (
         <div className={styles.modalContainer}>

@@ -4,23 +4,25 @@ import { BoardContext } from '../contexts/BoardContext.jsx'
 import { ModalContext } from "../contexts/ModalContext.jsx"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase.js"
+import { getAuth } from "firebase/auth"
 
 export default function BoardContent() {
     const { chosenBoard } = useContext(BoardContext)
     const [ columns, setColumns ] = useState([])
     const { showModal } = useContext(ModalContext)
-
+    const auth = getAuth()
+    const user = auth.currentUser
     function handleTaskClick(task) {
         showModal('ViewTaskModal', { taskData: task })
     }
 
     async function fetchBoardData() {
         if (chosenBoard) {
-            const colQuerySnapshot = await getDocs(collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns"))
+            const colQuerySnapshot = await getDocs(collection(db, "users", user.uid, "boards", chosenBoard.id, "columns"))
             const fetchedColumns = []
             for (let doc of colQuerySnapshot.docs) {
                 const column = { id: doc.id, ...doc.data() }
-                const tasksSnapshot = await getDocs(collection(db, "users", "defaultUser", "boards", chosenBoard.id, "columns", doc.id, "tasks"))
+                const tasksSnapshot = await getDocs(collection(db, "users", user.uid, "boards", chosenBoard.id, "columns", doc.id, "tasks"))
                 column.tasks = tasksSnapshot.docs.map(taskDoc => ({ id: taskDoc.id, ...taskDoc.data() }))
                 fetchedColumns.push(column)
                 console.log(fetchedColumns)

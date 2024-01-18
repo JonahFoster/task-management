@@ -10,20 +10,14 @@ export default function Home() {
     const navigate = useNavigate()
     const { showModal } = useContext(ModalContext)
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                navigate('/app')
-            } else {
-                showModal('SignUpModal')
-            }
-        })
-        return () => unsubscribe()
-    }, [navigate, showModal, auth])
+    function handleClick() {
+        showModal('SignUpModal')
+    }
 
     return (
         <div>
             <Header />
+            <button onClick={handleClick}></button>
         </div>
     )
 }
