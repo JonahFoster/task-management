@@ -15,10 +15,9 @@ export default function Home() {
             if (user) {
                 navigate('/app')
             } else {
-                showModal('LoginModal')
+                showModal('SignUpModal')
             }
         })
-
         return () => unsubscribe()
     }, [navigate, showModal, auth])
 

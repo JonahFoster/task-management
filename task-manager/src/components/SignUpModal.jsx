@@ -2,6 +2,8 @@ import styles from "../assets/stylesheets/SignUpModal.module.css"
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"
 import {useContext, useState} from "react"
 import {ModalContext} from "../contexts/ModalContext.jsx"
+import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from "../../firebase.js"
 
 // TODO
 // finish using submitted, error, and password equal state
@@ -45,13 +47,19 @@ export default function SignUpModal() {
                 .then((userCredential) => {
                     // Signed up
                     const user = userCredential.user
-                    // ...
+                    createUserCollection(user.uid)
                 })
                 .catch((error) => {
                     console.log(error.code + ' ' + error.message)
                 })
             hideModal()
         }
+    }
+
+    async function createUserCollection(userId) {
+        const userDocRef = doc(db, "users", userId)
+        await setDoc(userDocRef, {})
+        const boardsCollectionRef = collection(userDocRef, "boards")
     }
 
     return (
