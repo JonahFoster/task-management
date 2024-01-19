@@ -1,17 +1,43 @@
 import styles from "../assets/stylesheets/AddTaskModal.module.css"
 import crossImg from "../assets/icon-cross.svg"
-import { useState } from 'react'
+import {useContext, useEffect, useState} from 'react'
+import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {collection, doc, setDoc} from "firebase/firestore";
+import {ModalContext} from "../contexts/ModalContext.jsx";
+import {db} from "../../firebase.js";
 
 export default function AddBoardModal({ onClose }) {
+    const auth = getAuth()
+    const [currentUser, setCurrentUser] = useState(null)
+    const { hideModal } = useContext(ModalContext)
     const [formData, setFormData] = useState({
         name: '',
         columns: [{ name: '', }],
     })
 
-    function handleSubmit(e) {
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setCurrentUser(user)
+            }
+            // handle the case when user is not signed in
+        })
+
+        return () => unsubscribe()
+    }, [])
+
+    async function handleSubmit(e) {
         e.preventDefault()
-        console.log("temp")
-        // Code to upload data to Firebase
+        if (!currentUser) {
+            console.log("No user signed in")
+        }
+        console.log(currentUser)
+        const boardRef = doc(collection(db, "users", currentUser.uid, "boards"))
+        await setDoc(boardRef, {
+            name: formData.name,
+            columns: formData.columns.map(column => ({ name: column.description }))
+        })
+        hideModal()
     }
 
     function handleChange(e) {
@@ -74,7 +100,7 @@ export default function AddBoardModal({ onClose }) {
                             + Add New Column
                         </button>
                     </div>
-                    <button type="submit" className={styles.modalSubmitBtn}>Create Task</button>
+                    <button type="submit" className={styles.modalSubmitBtn}>Create Board</button>
                 </form>
             </div>
         </div>
