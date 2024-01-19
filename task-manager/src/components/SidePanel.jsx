@@ -10,7 +10,7 @@ import { BoardContext } from '../contexts/BoardContext.jsx'
 import {ModalContext} from "../contexts/ModalContext.jsx"
 import { BsKanbanFill, BsCheckSquare } from "react-icons/bs";
 import { RiTaskLine } from "react-icons/ri";
-import {getAuth} from "firebase/auth";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 
 export default function SidePanel() {
     const [boards, setBoards] = useState([])
@@ -18,7 +18,17 @@ export default function SidePanel() {
     const [panelVisibility, setPanelVisibility] = useState(true)
     const { showModal } = useContext(ModalContext)
     const auth = getAuth()
-    const user = auth.currentUser
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                grabBoards(user)
+            }
+            // handle the case when user is not signed in
+        })
+
+        return () => unsubscribe()
+    }, [chosenBoard])
 
     function togglePanelVisibility() {
         setPanelVisibility(!panelVisibility)
@@ -36,7 +46,7 @@ export default function SidePanel() {
         showModal('EditBoardModal')
     }
 
-    async function grabBoards() {
+    async function grabBoards(user) {
         const querySnapshot = await getDocs(collection(db, "users", user.uid, "boards"))
         const fetchedBoards = []
         querySnapshot.forEach((doc) => {

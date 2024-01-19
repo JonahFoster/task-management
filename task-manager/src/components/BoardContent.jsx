@@ -4,19 +4,30 @@ import { BoardContext } from '../contexts/BoardContext.jsx'
 import { ModalContext } from "../contexts/ModalContext.jsx"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "../../firebase.js"
-import { getAuth } from "firebase/auth"
+import { getAuth, onAuthStateChanged } from "firebase/auth"
 
 export default function BoardContent() {
     const { chosenBoard } = useContext(BoardContext)
     const [ columns, setColumns ] = useState([])
     const { showModal } = useContext(ModalContext)
     const auth = getAuth()
-    const user = auth.currentUser
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                fetchBoardData(user)
+            }
+            // handle the case when user is not signed in
+        })
+
+        return () => unsubscribe()
+    }, [chosenBoard])
+
     function handleTaskClick(task) {
         showModal('ViewTaskModal', { taskData: task })
     }
 
-    async function fetchBoardData() {
+    async function fetchBoardData(user) {
         if (chosenBoard) {
             const colQuerySnapshot = await getDocs(collection(db, "users", user.uid, "boards", chosenBoard.id, "columns"))
             const fetchedColumns = []
