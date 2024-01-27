@@ -1,10 +1,10 @@
 import styles from "../assets/stylesheets/AddTaskModal.module.css"
 import crossImg from "../assets/icon-cross.svg"
 import {useContext, useEffect, useState} from 'react'
-import {getAuth, onAuthStateChanged} from "firebase/auth";
-import {collection, doc, setDoc} from "firebase/firestore";
-import {ModalContext} from "../contexts/ModalContext.jsx";
-import {db} from "../../firebase.js";
+import {getAuth, onAuthStateChanged} from "firebase/auth"
+import {collection, doc, setDoc} from "firebase/firestore"
+import {ModalContext} from "../contexts/ModalContext.jsx"
+import {db} from "../../firebase.js"
 
 export default function AddBoardModal({ onClose }) {
     const auth = getAuth()
@@ -12,7 +12,7 @@ export default function AddBoardModal({ onClose }) {
     const { hideModal } = useContext(ModalContext)
     const [formData, setFormData] = useState({
         name: '',
-        columns: [{ name: '', }],
+        columns: [{ name: '', tasks: [] }],
     })
 
     useEffect(() => {
@@ -35,7 +35,10 @@ export default function AddBoardModal({ onClose }) {
         const boardRef = doc(collection(db, "users", currentUser.uid, "boards"))
         await setDoc(boardRef, {
             name: formData.name,
-            columns: formData.columns.map(column => ({ name: column.description }))
+            columns: formData.columns.map(column => ({
+                name: column.name,
+                tasks: []
+            }))
         })
         hideModal()
     }
@@ -45,14 +48,14 @@ export default function AddBoardModal({ onClose }) {
     }
 
     function handleColumns(index, event) {
-        const updatedColumns = formData.columns.map((subtask, i) => (
-            index === i ? { ...subtask, description: event.target.value } : subtask
+        const updatedColumns = formData.columns.map((column, i) => (
+            index === i ? { ...column, name: event.target.value, tasks: [] } : column
         ))
         setFormData({ ...formData, columns: updatedColumns })
     }
 
     function addColumn() {
-        setFormData({ ...formData, columns: [...formData.columns, {description: ''}] })
+        setFormData({ ...formData, columns: [...formData.columns, { name: '', tasks: [] }] })
     }
 
     function removeColumn(index) {
