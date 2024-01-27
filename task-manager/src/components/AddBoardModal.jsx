@@ -1,10 +1,10 @@
 import styles from "../assets/stylesheets/AddTaskModal.module.css"
 import crossImg from "../assets/icon-cross.svg"
-import {useContext, useEffect, useState} from 'react'
-import {getAuth, onAuthStateChanged} from "firebase/auth"
-import {collection, doc, setDoc} from "firebase/firestore"
-import {ModalContext} from "../contexts/ModalContext.jsx"
-import {db} from "../../firebase.js"
+import { useContext, useEffect, useState } from 'react'
+import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { collection, doc, setDoc } from "firebase/firestore"
+import { ModalContext } from "../contexts/ModalContext.jsx"
+import { db } from "../../firebase.js"
 
 export default function AddBoardModal({ onClose }) {
     const auth = getAuth()
@@ -20,7 +20,6 @@ export default function AddBoardModal({ onClose }) {
             if (user) {
                 setCurrentUser(user)
             }
-            // handle the case when user is not signed in
         })
 
         return () => unsubscribe()
@@ -30,16 +29,22 @@ export default function AddBoardModal({ onClose }) {
         e.preventDefault()
         if (!currentUser) {
             console.log("No user signed in")
+            return
         }
-        console.log(currentUser)
         const boardRef = doc(collection(db, "users", currentUser.uid, "boards"))
         await setDoc(boardRef, {
-            name: formData.name,
-            columns: formData.columns.map(column => ({
+            name: formData.name
+        })
+
+        const columnsCollectionRef = collection(boardRef, "columns")
+        formData.columns.forEach(async (column) => {
+            const columnRef = doc(columnsCollectionRef)
+            await setDoc(columnRef, {
                 name: column.name,
                 tasks: []
-            }))
+            })
         })
+
         hideModal()
     }
 
@@ -88,7 +93,7 @@ export default function AddBoardModal({ onClose }) {
                                     id={`Column ${index}`}
                                     name="column"
                                     type="text"
-                                    value={column.description}
+                                    value={column.name}
                                     onChange={(e) => handleColumns(index, e)}
                                     placeholder="e.g. Todo"
                                     className={styles.modalFormText + " " + styles.modalFormSubTaskText}
