@@ -1,12 +1,11 @@
 import styles from "../assets/stylesheets/AddTaskModal.module.css"
 import crossImg from "../assets/icon-cross.svg"
-import {useContext, useState} from 'react'
-import { doc, setDoc, collection, query, where, getDocs } from 'firebase/firestore'
+import { useContext, useState, useEffect } from 'react'
+import { doc, setDoc, collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from "../../firebase.js"
 import { BoardContext } from '../contexts/BoardContext.jsx'
-import {getAuth} from "firebase/auth";
+import { getAuth } from "firebase/auth"
 
-// TODO map columns list to select input
 export default function AddTaskModal({ onClose }) {
     const { chosenBoard } = useContext(BoardContext)
     const auth = getAuth()
@@ -18,13 +17,31 @@ export default function AddTaskModal({ onClose }) {
         column: ''
     })
 
+    // New state for storing columns
+    const [columns, setColumns] = useState([])
+
+    // Fetching columns when the chosen board or user changes
+    useEffect(() => {
+        if (chosenBoard && user) {
+            const fetchColumns = async () => {
+                const columnsRef = collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
+                const querySnapshot = await getDocs(columnsRef)
+                const fetchedColumns = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+                setColumns(fetchedColumns)
+            }
+
+            fetchColumns()
+        }
+    }, [chosenBoard, user])
+
     async function handleSubmit(e) {
         e.preventDefault()
         console.log(formData)
-        const columnsRef =  collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
+        const columnsRef = collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
         const columnQuery = query(columnsRef, where("name", "==", formData.column))
         const querySnapshot = await getDocs(columnQuery)
         const columnDoc = querySnapshot.docs[0]
+        console.log(columnDoc)
         const taskDocRef = doc(collection(db, "users", user.uid, "boards", chosenBoard.id, "columns", columnDoc.id, "tasks"))
         await setDoc(taskDocRef, {
             title: formData.title,
@@ -40,13 +57,13 @@ export default function AddTaskModal({ onClose }) {
 
     function handleSubtasks(index, event) {
         const updatedSubtasks = formData.subtasks.map((subtask, i) => (
-            index === i ? { ...subtask, description: event.target.value } : subtask
+            index === i ? { ...subtask, title: event.target.value } : subtask
         ))
         setFormData({ ...formData, subtasks: updatedSubtasks })
     }
 
     function addSubtask() {
-        setFormData({ ...formData, subtasks: [...formData.subtasks, {description: ''}] })
+        setFormData({ ...formData, subtasks: [...formData.subtasks, { title: '' }] })
     }
 
     function removeSubtask(index) {
@@ -78,7 +95,7 @@ export default function AddTaskModal({ onClose }) {
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
-                            placeholder="e.g. Take coffee break"
+                            placeholder="e.g. Take a short break"
                             className={styles.modalFormText + " " + styles.modalFormTextArea}
                         />
                     </div>
@@ -90,9 +107,9 @@ export default function AddTaskModal({ onClose }) {
                                     id={`Subtask ${index}`}
                                     name="subtask"
                                     type="text"
-                                    value={subtask.description}
+                                    value={subtask.title}
                                     onChange={(e) => handleSubtasks(index, e)}
-                                    placeholder="e.g. Take coffee break"
+                                    placeholder="e.g. Get up and stretch"
                                     className={styles.modalFormText + " " + styles.modalFormSubTaskText}
                                 />
                                 <button className={styles.modalRemoveSubtask} type="button"
@@ -114,9 +131,10 @@ export default function AddTaskModal({ onClose }) {
                             onChange={handleChange}
                             className={styles.modalFormSelect}
                         >
-                            <option value="toDo">Todo</option>
-                            <option value="inProgress">In Progress</option>
-                            <option value="Done">Done</option>
+                            <option value="" disabled selected>Select a Column</option>
+                            {columns.map((column) => (
+                                <option key={column.id} value={column.name}>{column.name}</option>
+                            ))}
                         </select>
                     </div>
                     <button type="submit" className={styles.modalSubmitBtn}>Create Task</button>
