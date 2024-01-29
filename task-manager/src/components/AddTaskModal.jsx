@@ -16,14 +16,11 @@ export default function AddTaskModal({ onClose }) {
         subtasks: [{ title: '', }],
         column: ''
     })
-
-    // New state for storing columns
     const [columns, setColumns] = useState([])
 
-    // Fetching columns when the chosen board or user changes
     useEffect(() => {
         if (chosenBoard && user) {
-            const fetchColumns = async () => {
+            async function fetchColumns() {
                 const columnsRef = collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
                 const querySnapshot = await getDocs(columnsRef)
                 const fetchedColumns = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))

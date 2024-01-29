@@ -1,19 +1,69 @@
 import styles from "../assets/stylesheets/AddTaskModal.module.css"
 import crossImg from "../assets/icon-cross.svg"
-import { useState } from 'react'
+import {useContext, useEffect, useState} from 'react'
+import {getAuth} from "firebase/auth";
+import {BoardContext} from "../contexts/BoardContext.jsx";
+import {collection, doc, getDocs, setDoc} from "firebase/firestore";
+import {db} from "../../firebase.js";
+import {ModalContext} from "../contexts/ModalContext.jsx";
 
 
 // TODO grab present list of columns
 export default function EditBoardModal({ onClose }) {
+    const { chosenBoard } = useContext(BoardContext)
+    const { hideModal } = useContext(ModalContext)
+    console.log(chosenBoard)
+    const auth = getAuth()
+    const user = auth.currentUser
     const [formData, setFormData] = useState({
         name: '',
         columns: [{ name: '', }],
     })
+    const [columns, setColumns] = useState([])
 
-    function handleSubmit(e) {
+    useEffect(() => {
+        async function fetchColumns() {
+            if (chosenBoard && user) {
+                const columnsRef = collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
+                const querySnapshot = await getDocs(columnsRef)
+                const fetchedColumns = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+                setColumns(fetchedColumns)
+            }
+        }
+
+        fetchColumns()
+    }, [chosenBoard, user])
+
+    useEffect(() => {
+        if (chosenBoard) {
+            setFormData(formData => ({ ...formData, name: chosenBoard.name }))
+        }
+        if (columns.length > 0) {
+            setFormData(formData => ({ ...formData, columns: columns }))
+        }
+    }, [chosenBoard, columns])
+
+    async function handleSubmit(e) {
         e.preventDefault()
-        console.log("temp")
-        // Code to upload data to Firebase
+        if (!user) {
+            console.log("No user signed in")
+            return
+        }
+        const boardRef = doc(collection(db, "users", user.uid, "boards"))
+        await setDoc(boardRef, {
+            name: formData.name
+        })
+
+        const columnsCollectionRef = collection(boardRef, "columns")
+        formData.columns.forEach(async (column) => {
+            const columnRef = doc(columnsCollectionRef)
+            await setDoc(columnRef, {
+                name: column.name,
+                tasks: []
+            })
+        })
+
+        hideModal()
     }
 
     function handleChange(e) {
@@ -47,7 +97,7 @@ export default function EditBoardModal({ onClose }) {
                             id="name"
                             name="name"
                             type="text"
-                            value={formData.name}
+                            value={chosenBoard.name}
                             onChange={handleChange}
                             placeholder="e.g. Web Design"
                             className={styles.modalFormText}
@@ -61,7 +111,7 @@ export default function EditBoardModal({ onClose }) {
                                     id={`Column ${index}`}
                                     name="column"
                                     type="text"
-                                    value={column.description}
+                                    value={column.name}
                                     onChange={(e) => handleColumns(index, e)}
                                     placeholder="e.g. Todo"
                                     className={styles.modalFormText + " " + styles.modalFormSubTaskText}
@@ -76,7 +126,7 @@ export default function EditBoardModal({ onClose }) {
                             + Add New Column
                         </button>
                     </div>
-                    <button type="submit" className={styles.modalSubmitBtn}>Create Task</button>
+                    <button type="submit" className={styles.modalSubmitBtn}>Edit Board</button>
                 </form>
             </div>
         </div>
