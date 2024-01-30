@@ -33,3 +33,21 @@ header {
     margin-right: 32px;
     align-self: center;
 }
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    margin-left: auto;
+    margin-right: 32px;
+}
+
+.navItem {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}

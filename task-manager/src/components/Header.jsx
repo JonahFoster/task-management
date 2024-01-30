@@ -3,6 +3,7 @@ import verticalEllipsisImg from "../assets/icon-vertical-ellipsis.svg"
 import { BoardContext } from '../contexts/BoardContext.jsx'
 import {ModalContext} from "../contexts/ModalContext.jsx"
 import { useContext } from 'react'
+import { Link } from "react-router-dom";
 
 export default function Header() {
     const { chosenBoard } = useContext(BoardContext)
@@ -18,9 +19,13 @@ export default function Header() {
 
     return (
         <header>
-            <h1 className={styles.boardName}>{chosenBoard ? chosenBoard.name : 'No board selected'}</h1>
-            <button className={styles.headerAddBtn} onClick={handleAddTaskClick}>+ Add New Task</button>
-            <img className={styles.ellipsisImg} src={verticalEllipsisImg} alt="" onClick={handleEditBoardClick}/>
+            <h1 className={styles.boardName}>journi</h1>
+            <nav className={styles.nav}>
+                <Link to="/" className={styles.navItem}>Home</Link>
+                <Link to="/app" className={styles.navItem}>App</Link>
+                <Link to="/why" className={styles.navItem}>Why Journi</Link>
+                <Link to="/about" className={styles.navItem}>About Us</Link>
+            </nav>
         </header>
     )
 }
