@@ -7,12 +7,9 @@ import {collection, doc, getDocs, setDoc} from "firebase/firestore";
 import {db} from "../../firebase.js";
 import {ModalContext} from "../contexts/ModalContext.jsx";
 
-
-// TODO grab present list of columns
 export default function EditBoardModal({ onClose }) {
     const { chosenBoard } = useContext(BoardContext)
     const { hideModal } = useContext(ModalContext)
-    console.log(chosenBoard)
     const auth = getAuth()
     const user = auth.currentUser
     const [formData, setFormData] = useState({
@@ -49,18 +46,25 @@ export default function EditBoardModal({ onClose }) {
             console.log("No user signed in")
             return
         }
-        const boardRef = doc(collection(db, "users", user.uid, "boards"))
+        const boardRef = doc(db, "users", user.uid, "boards", chosenBoard.id)
         await setDoc(boardRef, {
             name: formData.name
         })
 
         const columnsCollectionRef = collection(boardRef, "columns")
         formData.columns.forEach(async (column) => {
-            const columnRef = doc(columnsCollectionRef)
-            await setDoc(columnRef, {
-                name: column.name,
-                tasks: []
-            })
+            if (column.id) {
+                const columnRef = doc(columnsCollectionRef, column.id)
+                await setDoc(columnRef, {
+                    name: column.name
+                }, { merge: true })
+            } else {
+                const columnRef = doc(columnsCollectionRef)
+                await setDoc(columnRef, {
+                    name: column.name,
+                    tasks: []
+                })
+            }
         })
 
         hideModal()
@@ -71,14 +75,14 @@ export default function EditBoardModal({ onClose }) {
     }
 
     function handleColumns(index, event) {
-        const updatedColumns = formData.columns.map((subtask, i) => (
-            index === i ? { ...subtask, description: event.target.value } : subtask
+        const updatedColumns = formData.columns.map((column, i) => (
+            index === i ? { ...column, name: event.target.value } : column
         ))
         setFormData({ ...formData, columns: updatedColumns })
     }
 
     function addColumn() {
-        setFormData({ ...formData, columns: [...formData.columns, {description: ''}] })
+        setFormData({ ...formData, columns: [...formData.columns, {name: ''}] })
     }
 
     function removeColumn(index) {
@@ -97,7 +101,7 @@ export default function EditBoardModal({ onClose }) {
                             id="name"
                             name="name"
                             type="text"
-                            value={chosenBoard.name}
+                            value={formData.name}
                             onChange={handleChange}
                             placeholder="e.g. Web Design"
                             className={styles.modalFormText}
