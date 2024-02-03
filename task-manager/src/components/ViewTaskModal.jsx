@@ -17,7 +17,7 @@ export default function ViewTaskModal({ taskData, onClose }) {
     let subtasksData = taskData?.subtasks || []
 
     function handleEditTaskClick() {
-        showModal('EditTaskModal')
+        showModal('EditTaskModal', { taskData: taskData })
     }
 
     return (
