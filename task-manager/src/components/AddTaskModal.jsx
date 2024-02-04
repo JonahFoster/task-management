@@ -1,8 +1,6 @@
 import styles from "../assets/stylesheets/AddTaskModal.module.css"
 import crossImg from "../assets/icon-cross.svg"
 import { useContext, useState, useEffect } from 'react'
-import { doc, setDoc, collection, getDocs, query, where } from 'firebase/firestore'
-import { db } from "../../firebase.js"
 import { BoardContext } from '../contexts/BoardContext.jsx'
 import { getAuth } from "firebase/auth"
 import { findAllColumns, createTask } from "../firebase/databaseService.js";
