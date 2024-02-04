@@ -5,9 +5,12 @@ import { doc, setDoc, collection, getDocs, query, where } from 'firebase/firesto
 import { db } from "../../firebase.js"
 import { BoardContext } from '../contexts/BoardContext.jsx'
 import { getAuth } from "firebase/auth"
+import { findAllColumns, createTask } from "../firebase/databaseService.js";
+import {ModalContext} from "../contexts/ModalContext.jsx";
 
 export default function AddTaskModal({ onClose }) {
     const { chosenBoard } = useContext(BoardContext)
+    const { hideModal } = useContext(ModalContext)
     const auth = getAuth()
     const user = auth.currentUser
     const [formData, setFormData] = useState({
@@ -20,13 +23,10 @@ export default function AddTaskModal({ onClose }) {
 
     useEffect(() => {
         if (chosenBoard && user) {
-            async function fetchColumns() {
-                const columnsRef = collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
-                const querySnapshot = await getDocs(columnsRef)
-                const fetchedColumns = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-                setColumns(fetchedColumns)
+            const fetchColumns = async () => {
+                const allColumns = await findAllColumns( user, chosenBoard )
+                setColumns(allColumns)
             }
-
             fetchColumns()
         }
     }, [chosenBoard, user])
@@ -34,18 +34,8 @@ export default function AddTaskModal({ onClose }) {
     async function handleSubmit(e) {
         e.preventDefault()
         console.log(formData)
-        const columnsRef = collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
-        const columnQuery = query(columnsRef, where("name", "==", formData.column))
-        const querySnapshot = await getDocs(columnQuery)
-        const columnDoc = querySnapshot.docs[0]
-        console.log(columnDoc)
-        const taskDocRef = doc(collection(db, "users", user.uid, "boards", chosenBoard.id, "columns", columnDoc.id, "tasks"))
-        await setDoc(taskDocRef, {
-            title: formData.title,
-            description: formData.description,
-            status: formData.column,
-            subtasks: formData.subtasks
-        })
+        await createTask(user, chosenBoard, formData.column, formData)
+        hideModal()
     }
 
     function handleChange(e) {

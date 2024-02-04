@@ -45,8 +45,6 @@ export default function EditTaskModal({ taskData, onClose }) {
             console.log("No user or board or task selected")
             return
         }
-        console.log(taskData)
-        console.log(formData)
         const columnsRef = collection(db, "users", user.uid, "boards", chosenBoard.id, "columns")
         const oldColumnQuery = query(columnsRef, where("name", "==", taskData.status))
         const oldColumnSnapshot = await getDocs(oldColumnQuery)
