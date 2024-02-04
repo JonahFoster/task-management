@@ -1,5 +1,5 @@
 import styles from "../assets/stylesheets/BoardContent.module.css"
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState, useContext  } from 'react'
 import { BoardContext } from '../contexts/BoardContext.jsx'
 import { ModalContext } from "../contexts/ModalContext.jsx"
 import { collection, getDocs } from "firebase/firestore"

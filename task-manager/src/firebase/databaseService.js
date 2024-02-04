@@ -60,3 +60,7 @@ export const createBoard = async ( user, boardData ) => {
         console.log("Error in createBoard: ", error)
     }
 }
+
+export const fetchBoardData = async ( user, board ) => {
+
+}
