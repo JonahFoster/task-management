@@ -31,7 +31,6 @@ export default function AddTaskModal({ onClose }) {
 
     async function handleSubmit(e) {
         e.preventDefault()
-        console.log(formData)
         await createTask(user, chosenBoard, formData.column, formData)
         hideModal()
     }

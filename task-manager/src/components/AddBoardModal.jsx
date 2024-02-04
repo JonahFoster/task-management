@@ -5,6 +5,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { collection, doc, setDoc } from "firebase/firestore"
 import { ModalContext } from "../contexts/ModalContext.jsx"
 import { db } from "../../firebase.js"
+import {createBoard} from "../firebase/databaseService.js";
 
 export default function AddBoardModal({ onClose }) {
     const auth = getAuth()
@@ -31,20 +32,7 @@ export default function AddBoardModal({ onClose }) {
             console.log("No user signed in")
             return
         }
-        const boardRef = doc(collection(db, "users", currentUser.uid, "boards"))
-        await setDoc(boardRef, {
-            name: formData.name
-        })
-
-        const columnsCollectionRef = collection(boardRef, "columns")
-        formData.columns.forEach(async (column) => {
-            const columnRef = doc(columnsCollectionRef)
-            await setDoc(columnRef, {
-                name: column.name,
-                tasks: []
-            })
-        })
-
+        await createBoard(currentUser, formData)
         hideModal()
     }
 
