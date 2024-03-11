@@ -28,6 +28,7 @@ export default function AddBoardModal({ onClose }) {
 
     async function handleSubmit(e) {
         e.preventDefault()
+        console.log("Handle submit called")
         if (!currentUser) {
             console.log("No user signed in")
             return

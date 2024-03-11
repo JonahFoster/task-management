@@ -1,4 +1,4 @@
-import {collection, doc, getDocs, query, setDoc, where} from "firebase/firestore"
+import {collection, doc, getDocs, query, setDoc, where, deleteDoc} from "firebase/firestore"
 import {db} from "../../firebase.js"
 
 export const findColumn = async ( user, chosenBoard, column ) => {
@@ -62,5 +62,35 @@ export const createBoard = async ( user, boardData ) => {
 }
 
 export const fetchBoardData = async ( user, board ) => {
+    try {
+        const colQuerySnapshot = await getDocs(collection(db, "users", user.uid, "boards", board.id, "columns"))
+        const fetchedColumns = []
+        for (let doc of colQuerySnapshot.docs) {
+            const column = { id: doc.id, ...doc.data() }
+            const tasksSnapshot = await getDocs(collection(db, "users", user.uid, "boards", board.id, "columns", doc.id, "tasks"))
+            column.tasks = tasksSnapshot.docs.map(taskDoc => ({ id: taskDoc.id, ...taskDoc.data() }))
+            fetchedColumns.push(column)
+        }
+        return fetchedColumns;
+    } catch (error) {
+        console.log("Error in fetchBoardData: ", error)
+    }
+}
 
+export const deleteBoard = async (user, board) => {
+    try {
+        const boardRef = doc(db, "users", user.uid, "boards", board.id);
+        await deleteDoc(boardRef);
+    } catch (error) {
+        console.error("Error in deleteBoard: ", error);
+    }
+}
+
+export const deleteTask = async (user, board, column, task) => {
+    try {
+        const taskRef = doc(db, "users", user.uid, "boards", board.id, "columns", column.id, "tasks", task.id)
+        await deleteDoc(taskRef)
+    } catch (error) {
+        console.log("Error in deleteTask: ", error)
+    }
 }

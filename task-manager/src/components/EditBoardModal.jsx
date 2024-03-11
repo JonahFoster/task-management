@@ -3,9 +3,10 @@ import crossImg from "../assets/icon-cross.svg"
 import {useContext, useEffect, useState} from 'react'
 import {getAuth} from "firebase/auth";
 import {BoardContext} from "../contexts/BoardContext.jsx";
-import {collection, doc, getDocs, setDoc} from "firebase/firestore";
+import {collection, doc, getDocs, setDoc, deleteDoc} from "firebase/firestore";
 import {db} from "../../firebase.js";
 import {ModalContext} from "../contexts/ModalContext.jsx";
+import { deleteBoard } from "../firebase/databaseService.js";
 
 export default function EditBoardModal({ onClose }) {
     const { chosenBoard } = useContext(BoardContext)
@@ -41,35 +42,40 @@ export default function EditBoardModal({ onClose }) {
     }, [chosenBoard, columns])
 
     async function handleSubmit(e) {
-        e.preventDefault()
+        e.preventDefault();
         if (!user) {
-            console.log("No user signed in")
-            return
+            console.log("No user signed in");
+            return;
         }
-        const boardRef = doc(db, "users", user.uid, "boards", chosenBoard.id)
-        await setDoc(boardRef, {
-            name: formData.name
-        })
-
-        const columnsCollectionRef = collection(boardRef, "columns")
-        formData.columns.forEach(async (column) => {
+    
+        // Update board name
+        const boardRef = doc(db, "users", user.uid, "boards", chosenBoard.id);
+        await setDoc(boardRef, { name: formData.name });
+    
+        // Update and add columns
+        const columnIdsToUpdateOrAdd = new Set();
+        for (const column of formData.columns) {
+            let columnRef;
             if (column.id) {
-                const columnRef = doc(columnsCollectionRef, column.id)
-                await setDoc(columnRef, {
-                    name: column.name
-                }, { merge: true })
+                columnRef = doc(db, "users", user.uid, "boards", chosenBoard.id, "columns", column.id);
+                columnIdsToUpdateOrAdd.add(column.id);
             } else {
-                const columnRef = doc(columnsCollectionRef)
-                await setDoc(columnRef, {
-                    name: column.name,
-                    tasks: []
-                })
+                columnRef = doc(collection(db, "users", user.uid, "boards", chosenBoard.id, "columns"));
             }
-        })
-
-        hideModal()
+            await setDoc(columnRef, { name: column.name }, { merge: true });
+        }
+    
+        // Delete removed columns
+        for (const column of columns) {
+            if (!columnIdsToUpdateOrAdd.has(column.id)) {
+                const columnRef = doc(db, "users", user.uid, "boards", chosenBoard.id, "columns", column.id);
+                await deleteDoc(columnRef);
+            }
+        }
+    
+        hideModal();
     }
-
+    
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -88,6 +94,11 @@ export default function EditBoardModal({ onClose }) {
     function removeColumn(index) {
         const updatedColumns = formData.columns.filter((_, i) => i !== index)
         setFormData({ ...formData, columns: updatedColumns })
+    }
+
+    async function handleDelete() {
+        await deleteBoard(user, chosenBoard)
+        hideModal()
     }
 
     return (
@@ -131,6 +142,13 @@ export default function EditBoardModal({ onClose }) {
                         </button>
                     </div>
                     <button type="submit" className={styles.modalSubmitBtn}>Edit Board</button>
+                    <button 
+                        type="button" 
+                        className={styles.modalSubmitBtn}
+                        onClick={() => handleDelete()}
+                    >
+                        Delete
+                    </button>
                 </form>
             </div>
         </div>

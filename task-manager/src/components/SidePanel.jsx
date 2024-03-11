@@ -3,7 +3,7 @@ import boardImg from "../assets/icon-board.svg"
 import hideSidebarImg from "../assets/icon-hide-sidebar.svg"
 import logoImg from "../assets/logo-mobile.svg"
 import showSidebarImg from "../assets/icon-show-sidebar.svg"
-import { collection, getDocs } from "firebase/firestore"
+import { collection, getDocs, onSnapshot, query } from "firebase/firestore"
 import { db } from "../../firebase.js"
 import { useState, useEffect, useContext } from 'react'
 import { BoardContext } from '../contexts/BoardContext.jsx'
@@ -22,13 +22,32 @@ export default function SidePanel() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                grabBoards(user)
+                const boardsQuery = query(collection(db, "users", user.uid, "boards"));
+    
+                const unsubscribeFromBoards = onSnapshot(boardsQuery, (querySnapshot) => {
+                    const fetchedBoards = [];
+                    querySnapshot.forEach((doc) => {
+                        fetchedBoards.push({ id: doc.id, ...doc.data() });
+                    });
+                    setBoards(fetchedBoards);
+    
+                    if (fetchedBoards.length > 0 && !chosenBoard) {
+                        setChosenBoard(fetchedBoards[0]);
+                    }
+                });
+    
+                return () => {
+                    unsubscribeFromBoards();
+                };
+            } else {
+                console.log("No user");
+                setBoards([]);
             }
-            // handle the case when user is not signed in
-        })
-
-        return () => unsubscribe()
-    }, [chosenBoard])
+        });
+    
+        return () => unsubscribe();
+    }, [auth, chosenBoard, setChosenBoard]);
+    
 
     function togglePanelVisibility() {
         setPanelVisibility(!panelVisibility)
@@ -47,7 +66,7 @@ export default function SidePanel() {
     }
 
     async function grabBoards(user) {
-        const querySnapshot = await getDocs(collection(db, "users", user.uid, "boards"))
+        const querySnapshot = await getDocs(collection(db, "users", user?.uid, "boards"))
         const fetchedBoards = []
         querySnapshot.forEach((doc) => {
             fetchedBoards.push({ id: doc.id, ...doc.data() })
