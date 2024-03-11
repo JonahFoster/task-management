@@ -15,8 +15,9 @@ export default function Home() {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 setSignedIn(true)
+            } else {
+                setSignedIn(false)
             }
-            setSignedIn(false)
         })
 
         return () => unsubscribe()

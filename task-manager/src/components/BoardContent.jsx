@@ -93,9 +93,6 @@ export default function BoardContent() {
                         <div className={styles.columnHeader}>
                             <p className={styles.columnHeaderTitle + " " + styles.addColumnHeader} aria-hidden="true">Add a new column</p>
                         </div>
-                        <div className={styles.addColumnContainer}>
-                            <p className={styles.addColumnText}>+ New Column</p>
-                        </div>
                     </div>
                 </div>
             ) : (

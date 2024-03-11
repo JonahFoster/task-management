@@ -94,15 +94,17 @@ export default function SidePanel() {
                         <h1 className={styles.logoText}>kanban</h1>
                     </div>
                     <div className={styles.panelContent}>
-                        <h4>ALL BOARDS ({boards.length})</h4>
-                        {boards.map((board, index) => (
-                            <div key={index}
-                                 className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}
-                                 onClick={() => changeBoard(board)}>
-                                <BsKanbanFill className={styles.boardImg} />
-                                <p>{board.name}</p>
+                            <h4 className={styles.panelItemHeader}>ALL BOARDS ({boards.length})</h4>
+                            <div className={styles.boardsList}>
+                                {boards.map((board, index) => (
+                                    <div key={index}
+                                        className={`${styles.panelItem} ${chosenBoard && board.id === chosenBoard.id ? styles.panelItemSelected : ''}`}
+                                        onClick={() => changeBoard(board)}>
+                                        <BsKanbanFill className={styles.boardImg} />
+                                        <p>{board.name}</p>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
                         <div className={styles.panelItem + ' ' + styles.panelItemNew} onClick={handleAddBoardClick}>
                             <BsKanbanFill className={styles.boardImg + ' ' + styles.boardImgInteract} />
                             <p>Create New Board</p>

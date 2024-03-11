@@ -1,9 +1,10 @@
-section {
+.sidePanel {
     background-color: var(--gray);
     width: 300px;
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between; 
     border-right: 1px solid var(--light-gray);
 }
 
@@ -25,8 +26,21 @@ section {
 .panelContent {
 }
 
+.boardsList {
+    height: 200px;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.panelItemHeader {
+    padding: 0px 142px 0px 32px;
+    color: var(--muted-gray);
+    white-space: nowrap;
+    margin: 0;
+}
+
 h4 {
-    padding: 16px 142px 0px 32px;
+    padding: 0px 142px 0px 32px;
     color: var(--muted-gray);
     white-space: nowrap;
 }
@@ -78,8 +92,6 @@ li {
 
 
 .panelFooterContent {
-    margin-top: 100px;
-    padding-bottom: 40px;
 }
 
 .showPanelIcon {
@@ -96,5 +108,4 @@ li {
 }
 
 .panelManage {
-    margin-top: auto;
 }
