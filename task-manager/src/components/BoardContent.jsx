@@ -14,6 +14,7 @@ export default function BoardContent() {
   const [isLoading, setIsLoading] = useState(false);
   const { showModal } = useContext(ModalContext);
   const auth = getAuth();
+  const user = auth.currentUser;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -76,13 +77,11 @@ export default function BoardContent() {
     showModal("ViewTaskModal", { taskData: task, column: column });
   }
 
-  async function setBoardData(user) {
-    setIsLoading(true);
+  async function setBoardData() {
     if (chosenBoard) {
       const fetchedColumns = await fetchBoardData(user, chosenBoard);
       setColumns(fetchedColumns);
     }
-    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -144,11 +143,8 @@ export default function BoardContent() {
             <div className={styles.noColumnsMainBoardContainer}>
               <div className={styles.noColumnsContainer}>
                 <h2 className={styles.noColumnText}>
-                  This board is empty. Create a new column to get started.
+                  This board is empty. Edit the board to get started.
                 </h2>
-                <button className={styles.noColumnButton}>
-                  + Add New Column
-                </button>
               </div>
             </div>
           )}

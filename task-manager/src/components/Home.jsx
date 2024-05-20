@@ -36,11 +36,15 @@ export default function Home() {
             <Header />
             <div className={styles.heroSection}>
                 <h1 className={styles.welcomeTitle}>start your <span className={styles.welcomeTitleJourni}>journi</span></h1>
-                {!signedIn && (
+                {!signedIn ? (
                     <div className={styles.buttonContainer}>
                         <button className={styles.loginBtn} onClick={handleLogin}>Login</button>
                         <button className={styles.signUpBtn} onClick={handleSignUp}>Sign Up</button>
                     </div>
+                ) : (
+                    <div className={styles.buttonContainer}>
+                    <button className={styles.loginBtn} onClick={() => navigate('/app')}>Get Started</button>
+                </div>
                 )}
             </div>
 
